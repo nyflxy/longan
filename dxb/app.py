@@ -21,7 +21,7 @@ if platform.system() == "Linux":
 _root = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(os.path.join(_root))
 os.chdir(_root)
-
+import tornado
 from tornado import web
 from tornado.ioloop import IOLoop
 from tornado.httpserver import HTTPServer
@@ -48,6 +48,9 @@ class Application(web.Application):
                         )
 
         super(Application, self).__init__(handlers, **settings)
+
+        # 建议设定为CPU核心数量 * 4或8或16也是可以接受的, 取决于计算量，计算量越大设定的值应该越小.
+        self.executor = tornado.concurrent.futures.ThreadPoolExecutor(16)
 
     def reverse_api(self, request):
         """Returns a URL name for a request"""

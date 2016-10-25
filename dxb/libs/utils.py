@@ -28,6 +28,7 @@ from concurrent import futures
 import logging
 import zipfile
 import re
+import pdb
 
 def get_root_path():
     return options.root_path
@@ -499,11 +500,13 @@ def reset_response_data(code,e=None):
 
     return result
 
-def dump(str):
+def dump(obj):
     result = None
-    if isinstance(str,pymongo.cursor.Cursor) or isinstance(str,list) or isinstance(str,pymongo.command_cursor.CommandCursor):
+    if isinstance(obj,pymongo.cursor.Cursor) or \
+            isinstance(obj,list) or \
+            isinstance(obj,pymongo.command_cursor.CommandCursor):
         result = []
-        for _s in str:
+        for _s in obj:
             if type(_s) == type({}):
                 s = {}
                 for (k,v) in _s.items():
@@ -516,17 +519,19 @@ def dump(str):
             else:
                 s = _s
             result.append(s)
-    elif isinstance(str,dict):
-        for (k,v) in str.items():
+    elif isinstance(obj,dict):
+        for (k,v) in obj.items():
             if type(v) == type(ObjectId()):
-                str[k] = json.loads(dumps(v))['$oid']
+                obj[k] = json.loads(dumps(v))['$oid']
             elif type(v) == type(datetime.datetime.utcnow()):
-                str[k] = v.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
-        result = str
-    elif str is None:
+                obj[k] = v.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+        result = obj
+    elif isinstance(obj,pymongo.results.InsertOneResult):
+        result = {"inserted_id":str(obj.inserted_id)}
+    elif obj is None:
         result = None
-    elif len(str) == 0:
-        result = str
+    elif len(obj) == 0:
+        result = obj
     return result
 
 def check_code(checkcode_coll,str,code,type="mobile"):
@@ -588,3 +593,18 @@ def check_email(email):
 def check_mobile(mobile):
     return re.match("1\d{10}",mobile) is not None
 
+import torndb
+class TornDB(object):
+
+    def test(self):
+        db = torndb.Connection("localhost", "demosite", "root", "dhui123")
+        obj = db.get('select * from demosite_links where id=1')
+        obj = db.query('select * from demosite_links')
+        sql = 'insert into demosite_links(title,url,time) values("%s","%s","%s")'%("baidu.com",
+                                                "https://www.baidu.com",str(datetime.datetime.now()))
+        db.execute(sql)
+        db.execute('delete from demosite_links where id=2')
+
+if __name__ == "__main__":
+    torndb_obj = TornDB()
+    torndb_obj.test()

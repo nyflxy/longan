@@ -14,6 +14,7 @@ from tornado import httpclient
 from tornado import auth
 from tornado import locale
 from tornado import options
+import torndb
 
 #底层模块
 from tornado import httpserver
@@ -111,18 +112,18 @@ def connection_ready(sock, fd, events):
         handle_connection(connection, address)
 
 
-if __name__ == '__main__':
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.setblocking(0)
-    sock.bind(("", 8888))
-    sock.listen(128)
-
-    io_loop = tornado.ioloop.IOLoop.current()
-    callback = functools.partial(connection_ready, sock)
-    io_loop.add_handler(sock.fileno(), callback, io_loop.READ)
-    print "server start!"
-    io_loop.start()
+# if __name__ == '__main__':
+#     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
+#     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+#     sock.setblocking(0)
+#     sock.bind(("", 8888))
+#     sock.listen(128)
+#
+#     io_loop = tornado.ioloop.IOLoop.current()
+#     callback = functools.partial(connection_ready, sock)
+#     io_loop.add_handler(sock.fileno(), callback, io_loop.READ)
+#     print "server start!"
+#     io_loop.start()
 
 
 # tornado 协程
@@ -149,6 +150,6 @@ def asyn_sum(a, b):
 def main():
     asyn_sum(2,3)
     tornado.ioloop.IOLoop.instance().start()
-#
-# if __name__ == "__main__":
-#     main()
+
+if __name__ == "__main__":
+    main()
