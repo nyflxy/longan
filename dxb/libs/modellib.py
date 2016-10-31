@@ -59,35 +59,6 @@ class BaseModel(object):
             columns = document.keys()
         return columns
 
-    def is_exist(self,id,column='_id',is_objectid=True):
-        try:
-            if is_objectid:
-                items = self.get_coll().find_one({column:utils.create_objectid(id)})
-            else:
-                items = self.get_coll().find_one({column:id})
-        except:
-            return False
-        return items != None
-
-    def list(self,query_list,sort_list,use_pager=True,is_origin=False,page=1,page_size=options.page_size):
-        length = self.get_coll().find(query_list).count()
-
-        if use_pager:
-            pager = utils.count_page(length,page,page_size)
-            list = self.get_coll().aggregate([{"$match" : query_list},
-                                                   {"$sort":sort_list},
-                                                   {"$skip":pager['skip']},
-                                                   {"$limit":pager['page_size']}])
-        else:
-            pager = []
-            list = self.get_coll().aggregate([{"$match" : query_list},
-                                                   {"$sort":sort_list}
-                                                   ])
-        if is_origin:
-            return list,pager
-        else:
-            return utils.dump(list),pager
-
     @classmethod
     def get_model(cls,model_name):
         try:
@@ -168,3 +139,4 @@ class BaseModel(object):
                 objs.append(obj)
 
         return objs, pager
+
