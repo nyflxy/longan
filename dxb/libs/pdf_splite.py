@@ -6,13 +6,13 @@
 import os
 from cStringIO import StringIO
 from PyPDF2 import PdfFileReader, PdfFileWriter
-from pdfminer.pdfparser import PDFParser
-from pdfminer.pdfdocument import PDFDocument, PDFNoOutlines
-from pdfminer.pdfpage import PDFPage
-from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-from pdfminer.converter import PDFPageAggregator
-from pdfminer.layout import LAParams, LTTextBox, LTTextLine, LTFigure, LTImage, LTChar
-from pdfminer.pdfpage import PDFTextExtractionNotAllowed
+# from pdfminer.pdfparser import PDFParser
+# from pdfminer.pdfdocument import PDFDocument, PDFNoOutlines
+# from pdfminer.pdfpage import PDFPage
+# from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+# from pdfminer.converter import PDFPageAggregator
+# from pdfminer.layout import LAParams, LTTextBox, LTTextLine, LTFigure, LTImage, LTChar
+# from pdfminer.pdfpage import PDFTextExtractionNotAllowed
 import dxb.libs.utils as utils
 
 
