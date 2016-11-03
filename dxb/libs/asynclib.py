@@ -134,3 +134,30 @@ if __name__ == "__main__":
     http_server = tornado.httpserver.HTTPServer(Application())
     http_server.listen(tornado.options.options.port)
     tornado.ioloop.IOLoop.current().start()
+    
+def exception_handler(func):
+
+    def handler(self,*args,**kwargs):
+        try:
+            future = func(self,*args,**kwargs)
+            if future.exc_info():
+                raise Exception(future.result())
+        except Exception, e:
+            pdb.set_trace()
+            result = utils.init_response_data()
+            result = utils.reset_response_data(0, str(e))
+            self.finish(result)
+    return handler
+
+class TestHandler(tornado.web.RequestHandler):
+    model = models.LinkModel()
+
+    @exception_handler
+    @tornado.gen.coroutine
+    def get(self):
+        result = utils.init_response_data()
+        self.finish(result)
+        yield self.application.executor.submit(self.print_name,("name"))
+
+    def print_name(self,name):
+            print name
