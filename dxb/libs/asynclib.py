@@ -161,3 +161,28 @@ class TestHandler(tornado.web.RequestHandler):
 
     def print_name(self,name):
             print name
+            
+class AsyncUtils(object):
+    def __init__(self,num_worker=10):
+        self.io_loop = IOLoop.current()
+        self.executor = ThreadPoolExecutor(num_worker)
+
+    @run_on_executor
+    def cmd(self,func, *args, **kwargs):
+        res = func(*args,**kwargs)
+        return res
+async_utils = AsyncUtils()
+class TestHandler(tornado.web.RequestHandler):
+    model = models.LinkModel()
+
+    @exception_handler
+    @tornado.gen.coroutine
+    def get(self):
+        self._auto_finish =  False
+        name = yield self.application.executor.submit(self.print_name,("name"))
+        html = yield async_utils.cmd(requests.get,("https://www.baidu.com"))
+        result = utils.init_response_data()
+        self.finish(result)
+
+    def print_name(self,name):
+            return name
