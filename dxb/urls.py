@@ -86,7 +86,6 @@ def _generate_app_patterns(app_name,prefix=""):
 _generate_handler_patterns("handlers", handler_names)
 _generate_handler_patterns("handlers.admin", admin_names)
 _autoload_models("models",modelnames)
-
 for app in options.installed_apps:
     if not app.endswith("app"):
         raise "The app name error : must endwith 'app'! "

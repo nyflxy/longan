@@ -9,7 +9,7 @@ import os
 import platform
 import sys
 import pdb
-
+from tornado.options import define, options, parse_command_line
 defaultencoding = 'utf-8'
 if sys.getdefaultencoding() != defaultencoding:
     reload(sys)
@@ -25,11 +25,10 @@ import tornado
 from tornado import web
 from tornado.ioloop import IOLoop
 from tornado.httpserver import HTTPServer
-from tornado.options import options
 import dxb
 import libs
-from dxb import consts
 from libs.options import parse_options
+from dxb import consts
 
 class Application(web.Application):
     def __init__(self):

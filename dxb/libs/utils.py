@@ -593,7 +593,7 @@ def check_email(email):
 def check_mobile(mobile):
     return re.match("1\d{10}",mobile) is not None
 
-import torndb
+#import torndb
 class TornDB(object):
 
     def test(self):

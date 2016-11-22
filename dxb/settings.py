@@ -78,5 +78,5 @@ deadline_time = 60
 
 file_download_store_url = project_root_path +"/var/report/"
 
-installed_apps = ["addons.linkapp","addons.mailapp","addons.checkcodeapp","addons.eduapp","addons.fileapp"]
+installed_apps = []
 app_get_to_post = True
