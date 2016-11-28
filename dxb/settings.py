@@ -11,7 +11,7 @@ import dxb
 root_dir = os.path.dirname(os.path.abspath(dxb.__file__))
 root_path = root_dir
 project_root_path = os.path.dirname(root_path)
-debug = False
+debug = True
 login_url = "https://lcoalhost/login"
 dev_hosts = ['dell-PC','qihua04','SC-201604151426','peixun02','dhui100']
 if platform.node() in dev_hosts:
@@ -78,5 +78,5 @@ deadline_time = 60
 
 file_download_store_url = project_root_path +"/var/report/"
 
-installed_apps = []
+installed_apps = ["fileapp"]
 app_get_to_post = True

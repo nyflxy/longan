@@ -14,9 +14,6 @@ ui_modules = {}
 
 # the module names in handlers folder
 
-
-# TODO 写一个函数自动获取该list值
-
 handler_names = []
 admin_names = []
 modelnames = []
@@ -53,7 +50,7 @@ def _autoload_models(root_module,modelnames):
         __import__(module_name)
 
 def _generate_app_patterns(app_name,prefix=""):
-
+    import pdb
     # import model
     module_name = "%s.%s" % (app_name, "models")
     __import__(module_name)

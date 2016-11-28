@@ -2,10 +2,12 @@
 
 # python http客户端 基于python的库 urllib
 
+import pdb
 import urllib
 import urllib2
 import cookielib
 import json
+import httplib  
 
 #发送跨域POST请求
 def send_post_request(url,data,csrftoken,headers) :
@@ -50,3 +52,31 @@ def get(*args,**options):
     f = urllib.urlopen(url)
     result = json.loads(f.read())
     return result
+
+def json_post(ip,port,path,data):
+    pdb.set_trace()
+    try:  
+        conn = httplib.HTTPConnection("www.dh3t.com",port)
+    except Exception,e:  
+        print e  
+    headers = {"Content-Type":"application/json"}  
+    param = (data)
+    conn.request("POST" ,path, json.JSONEncoder().encode(param), headers)  
+    response = conn.getresponse()  
+    data = response.read()  
+    print data  
+    conn.close() 
+
+if __name__ == "__main__":
+    data = {
+      "account":"dh6806",
+      "password":"52c6db220833cd648eed69dcf2245375",
+      "msgid":"2c92825934837c4d0134837dcba00150",
+      "phones":"15996458299",
+      "content":"测试发送短信",
+      "sign":"【南京擎盾】"
+    }
+    ip = "www.dh3t.com"
+    port = 80
+    path = "/json/sms/Submit"
+    json_post(ip, port, path, data)

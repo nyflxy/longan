@@ -20,6 +20,9 @@ if platform.system() == "Linux":
 
 _root = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(os.path.join(_root))
+
+import addons
+
 os.chdir(_root)
 import tornado
 from tornado import web
